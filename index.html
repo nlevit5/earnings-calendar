@@ -15,6 +15,12 @@
     --line-strong:#d3d9e2;
     --accent:#2f5fd0;
     --accent-soft:#eaf0fc;
+    --beat:#1f9d57;
+    --beat-soft:#e7f5ec;
+    --miss:#d1483a;
+    --miss-soft:#fbecea;
+    --neutral:#7a8595;
+    --neutral-soft:#eef1f4;
     --shadow:0 1px 2px rgba(20,30,50,.05), 0 6px 20px rgba(20,30,50,.06);
     --radius:12px;
     --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Helvetica Neue",sans-serif;
@@ -41,6 +47,15 @@
     display:inline-block;margin-top:10px;font-size:12px;color:var(--ink-faint);
     background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 11px;
   }
+  .scoreboard{
+    margin:8px 0 0;font-size:13px;color:var(--ink-soft);display:flex;
+    flex-wrap:wrap;align-items:center;gap:6px 10px;
+  }
+  .scoreboard .sb-count{font-weight:600;color:var(--ink);}
+  .scoreboard .sb-sep{color:var(--ink-faint);}
+  .scoreboard .sb-group b{font-weight:600;}
+  .scoreboard .sb-beat{color:var(--beat);font-weight:600;}
+  .scoreboard .sb-miss{color:var(--miss);font-weight:600;}
 
   /* Toolbar / legend */
   .toolbar{
@@ -63,6 +78,22 @@
     padding:4px 6px;font-family:inherit;
   }
   .clear-filter:hover{text-decoration:underline;}
+  .controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .status-legend{
+    display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--ink-faint);
+  }
+  .status-legend .sk{display:inline-flex;align-items:center;gap:3px;}
+  .status-legend .up{color:var(--beat);font-weight:800;}
+  .status-legend .down{color:var(--miss);font-weight:800;}
+  .status-legend .flat{color:var(--neutral);font-weight:800;}
+  .toggle-btn{
+    display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none;
+    font-size:12px;padding:4px 11px;border-radius:999px;border:1px solid var(--line-strong);
+    background:#fff;color:var(--ink-soft);font-family:inherit;transition:all .12s ease;
+  }
+  .toggle-btn:hover{border-color:var(--ink-faint);}
+  .toggle-btn.active{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600;}
+  .toggle-btn .dot{width:8px;height:8px;border-radius:50%;background:var(--beat);flex:0 0 auto;}
 
   /* Calendar */
   .cal-head{
@@ -98,6 +129,19 @@
   .chip .tod{font-size:9px;font-weight:700;color:var(--ink-faint);flex:0 0 auto;letter-spacing:.02em;}
   .chip.hidden{display:none;}
   .chip.faded{opacity:.28;}
+  /* reported chips: filled look + status-colored left border */
+  .chip.reported{border-left-width:4px;font-weight:500;}
+  .chip.reported.rev-beat{background:var(--beat-soft);border-left-color:var(--beat);}
+  .chip.reported.rev-miss{background:var(--miss-soft);border-left-color:var(--miss);}
+  .chip.reported.rev-inline{background:var(--neutral-soft);border-left-color:var(--neutral);}
+  .chip .rstat{font-size:11px;font-weight:800;line-height:1;flex:0 0 auto;}
+  .chip .rstat.beat{color:var(--beat);}
+  .chip .rstat.miss{color:var(--miss);}
+  .chip .rstat.inline{color:var(--neutral);}
+  .chip .estat{width:7px;height:7px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.7);}
+  .chip .estat.beat{background:var(--beat);}
+  .chip .estat.miss{background:var(--miss);}
+  .chip .estat.inline{background:var(--neutral);}
 
   /* Modal */
   .overlay{
@@ -132,6 +176,29 @@
   .m-row:first-child{border-top:none;}
   .m-row .k{color:var(--ink-faint);font-weight:500;}
   .m-row .v{color:var(--ink);font-weight:600;text-align:right;}
+  /* Results block */
+  .m-results{margin-bottom:16px;}
+  .m-status{
+    font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+    display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;
+    margin-bottom:10px;
+  }
+  .m-status.done{background:var(--beat-soft);color:#166d3e;}
+  .m-status.pending{background:var(--bg);color:var(--ink-soft);}
+  .m-status .pulse{width:7px;height:7px;border-radius:50%;background:currentColor;}
+  .m-metric .v{display:inline-flex;align-items:center;gap:7px;justify-content:flex-end;flex-wrap:wrap;}
+  .m-metric .est{color:var(--ink-faint);font-weight:500;}
+  .m-metric .arrow{color:var(--ink-faint);font-weight:500;}
+  .m-metric .act{color:var(--ink);font-weight:700;}
+  .m-tagr{font-size:10px;font-weight:800;letter-spacing:.04em;padding:2px 7px;border-radius:999px;}
+  .m-tagr.beat{background:var(--beat-soft);color:#166d3e;}
+  .m-tagr.miss{background:var(--miss-soft);color:#a3271b;}
+  .m-tagr.inline{background:var(--neutral-soft);color:#5a6675;}
+  .m-surprise{
+    margin-top:14px;background:var(--bg);border-radius:10px;padding:11px 13px;
+    font-size:12.5px;color:var(--ink);line-height:1.45;
+  }
+  .m-surprise .lbl{font-weight:700;text-transform:uppercase;font-size:10px;letter-spacing:.06em;display:block;margin-bottom:3px;color:var(--ink-faint);}
   .m-note{
     margin-top:16px;background:var(--accent-soft);border-radius:10px;padding:11px 13px;
     font-size:12.5px;color:#274a9c;line-height:1.45;
@@ -165,6 +232,7 @@
       <h1>Q2 2026 Earnings Calendar — July</h1>
     </div>
     <p class="subtitle"><b id="companyCount"></b> companies reporting · as of <b id="asOfDate"></b></p>
+    <p class="scoreboard" id="scoreboard"></p>
     <span class="projected-note">Dates for future quarters are projected and subject to change.</span>
   </header>
 
@@ -172,7 +240,15 @@
     <div class="legend" id="legend">
       <span class="legend-label">Sectors</span>
     </div>
-    <button class="clear-filter" id="clearFilter" style="display:none;">Clear filter ✕</button>
+    <div class="controls">
+      <span class="status-legend" title="Revenue result vs. estimate">
+        <span class="sk"><span class="up">▲</span> beat</span>
+        <span class="sk"><span class="down">▼</span> miss</span>
+        <span class="sk"><span class="flat">◼</span> in line</span>
+      </span>
+      <button class="toggle-btn" id="reportedToggle" aria-pressed="false"><span class="dot"></span>Reported only</button>
+      <button class="clear-filter" id="clearFilter" style="display:none;">Clear filter ✕</button>
+    </div>
   </div>
 
   <div class="cal-head">
@@ -203,10 +279,7 @@
     </div>
     <div class="modal-body">
       <p class="m-desc" id="mDesc"></p>
-      <div class="m-rows">
-        <div class="m-row"><span class="k">Estimated EPS</span><span class="v" id="mEps"></span></div>
-        <div class="m-row"><span class="k">Estimated Revenue</span><span class="v" id="mRev"></span></div>
-      </div>
+      <div class="m-results" id="mResults"></div>
       <div class="m-note" id="mNoteWrap"><span class="lbl">Why it matters</span><span id="mNote"></span></div>
     </div>
   </div>
@@ -229,128 +302,128 @@ const DATA = {
     "https://www.nasdaq.com/market-activity/earnings"
   ],
   "companies": [
-    {"name":"FactSet Research Systems","ticker":"FDS","date":"2026-07-01","time":"BMO","sector":"Financials","description":"Provides financial data, analytics, and software to investment professionals.","epsEstimate":"$4.44","revenueEstimate":"$617.9M","note":"Fiscal Q3 read on financial-data spending"},
-    {"name":"General Mills","ticker":"GIS","date":"2026-07-01","time":"BMO","sector":"Consumer Staples","description":"Makes packaged foods including cereals, snacks, and pet food brands like Cheerios and Blue Buffalo.","epsEstimate":"$0.80","revenueEstimate":"$4.59B","note":"Early staples bellwether on volume vs. pricing"},
-    {"name":"MSC Industrial Direct","ticker":"MSM","date":"2026-07-01","time":"BMO","sector":"Industrials","description":"Distributes metalworking and MRO products to manufacturers.","epsEstimate":"$1.28","revenueEstimate":"$1.03B","note":"Gauge of US manufacturing demand"},
-    {"name":"National Beverage","ticker":"FIZZ","date":"2026-07-01","time":"BMO","sector":"Consumer Staples","description":"Produces sparkling waters and soft drinks, best known for the LaCroix brand.","epsEstimate":"$0.47","revenueEstimate":"$294.8M","note":""},
-    {"name":"UniFirst","ticker":"UNF","date":"2026-07-01","time":"BMO","sector":"Industrials","description":"Supplies and launders workplace uniforms and facility service products for businesses.","epsEstimate":"$1.93","revenueEstimate":"$627.7M","note":""},
-    {"name":"Greenbrier Companies","ticker":"GBX","date":"2026-07-01","time":"AMC","sector":"Industrials","description":"Designs and manufactures freight railcars and provides railcar leasing and services.","epsEstimate":"$0.57","revenueEstimate":"$612.7M","note":""},
-    {"name":"Constellation Brands","ticker":"STZ","date":"2026-07-01","time":"BMO","sector":"Consumer Staples","description":"Sells beer, wine, and spirits, including Modelo and Corona in the US.","epsEstimate":"","revenueEstimate":"","note":"Beer strength vs. wine/spirits divestitures in focus"},
-    {"name":"Hub Group","ticker":"HUBG","date":"2026-07-02","time":"BMO","sector":"Industrials","description":"Provides intermodal, trucking, and logistics freight transportation services.","epsEstimate":"$0.29","revenueEstimate":"$888.2M","note":"Freight-market demand signal"},
-    {"name":"Lindsay Corporation","ticker":"LNN","date":"2026-07-02","time":"BMO","sector":"Industrials","description":"Makes center-pivot irrigation systems and road infrastructure products.","epsEstimate":"$1.14","revenueEstimate":"$157.8M","note":"Ag-equipment demand read"},
-    {"name":"Enerpac Tool Group","ticker":"EPAC","date":"2026-07-07","time":"AMC","sector":"Industrials","description":"Manufactures high-pressure hydraulic tools and controlled-force products for industrial use.","epsEstimate":"$0.49","revenueEstimate":"$165.6M","note":""},
-    {"name":"Penguin Solutions","ticker":"PENG","date":"2026-07-07","time":"AMC","sector":"Technology","description":"Provides memory, LED, and AI/data-center integrated computing solutions.","epsEstimate":"$0.56","revenueEstimate":"$407.5M","note":"AI infrastructure demand read"},
-    {"name":"Kura Sushi USA","ticker":"KRUS","date":"2026-07-07","time":"AMC","sector":"Consumer Discretionary","description":"Operates a chain of revolving conveyor-belt sushi restaurants.","epsEstimate":"($0.05)","revenueEstimate":"$86.5M","note":""},
-    {"name":"Helen of Troy","ticker":"HELE","date":"2026-07-08","time":"BMO","sector":"Consumer Discretionary","description":"Markets consumer housewares, health, and beauty brands like OXO, Hydro Flask, and Braun.","epsEstimate":"$0.02","revenueEstimate":"$374.6M","note":"Early consumer-discretionary read"},
-    {"name":"Levi Strauss","ticker":"LEVI","date":"2026-07-08","time":"AMC","sector":"Consumer Discretionary","description":"Designs and sells denim jeans and apparel under the Levi's and Dockers brands.","epsEstimate":"$0.24","revenueEstimate":"$1.52B","note":"Watch full-year guidance and tariff/DTC trends"},
-    {"name":"PriceSmart","ticker":"PSMT","date":"2026-07-08","time":"AMC","sector":"Consumer Staples","description":"Operates membership warehouse clubs across Latin America and the Caribbean.","epsEstimate":"$1.32","revenueEstimate":"$1.43B","note":""},
-    {"name":"AZZ Inc.","ticker":"AZZ","date":"2026-07-08","time":"AMC","sector":"Industrials","description":"Provides hot-dip galvanizing and coil coating metal-protection services.","epsEstimate":"$1.69","revenueEstimate":"$434.6M","note":""},
-    {"name":"Delta Air Lines","ticker":"DAL","date":"2026-07-09","time":"BMO","sector":"Industrials","description":"Operates a major US-based global passenger and cargo airline.","epsEstimate":"$1.49","revenueEstimate":"$17.47B","note":"First real read on summer travel demand"},
-    {"name":"PepsiCo","ticker":"PEP","date":"2026-07-09","time":"BMO","sector":"Consumer Staples","description":"Global maker of beverages and snacks including Pepsi, Gatorade, and Frito-Lay chips.","epsEstimate":"$2.19","revenueEstimate":"$23.96B","note":"Unofficial kickoff of Q2 earnings season"},
-    {"name":"Simply Good Foods","ticker":"SMPL","date":"2026-07-09","time":"BMO","sector":"Consumer Staples","description":"Sells nutritional snacks and shakes under the Atkins and Quest brands.","epsEstimate":"$0.35","revenueEstimate":"$333.0M","note":""},
-    {"name":"WD-40 Company","ticker":"WDFC","date":"2026-07-09","time":"AMC","sector":"Consumer Staples","description":"Makes maintenance lubricants and cleaning products, led by its flagship WD-40 spray.","epsEstimate":"$1.58","revenueEstimate":"$172.8M","note":""},
-    {"name":"Fastenal","ticker":"FAST","date":"2026-07-13","time":"BMO","sector":"Industrials","description":"Distributor of industrial and construction fasteners, tools, and supplies through a vast branch and vending network.","epsEstimate":"","revenueEstimate":"","note":"First S&P 500 name of Q2 season; industrial-demand bellwether"},
-    {"name":"JPMorgan Chase","ticker":"JPM","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Largest U.S. bank by assets, spanning consumer banking, investment banking, and trading.","epsEstimate":"","revenueEstimate":"","note":"Unofficial kickoff of bank earnings; sets the tone"},
-    {"name":"Goldman Sachs","ticker":"GS","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Global investment bank and trading powerhouse with growing asset and wealth management arms.","epsEstimate":"","revenueEstimate":"","note":"Read on dealmaking and trading revenue"},
-    {"name":"Citigroup","ticker":"C","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Global bank with large consumer, markets, and treasury/services franchises.","epsEstimate":"","revenueEstimate":"","note":"Multi-year turnaround progress in focus"},
-    {"name":"Wells Fargo","ticker":"WFC","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Large U.S. consumer and commercial bank with heavy mortgage exposure.","epsEstimate":"","revenueEstimate":"","note":"Growth trajectory after asset-cap removal"},
-    {"name":"Bank of America","ticker":"BAC","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Second-largest U.S. bank by assets, with vast retail deposit base and Merrill wealth arm.","epsEstimate":"","revenueEstimate":"","note":"Net interest income trend in focus"},
-    {"name":"Morgan Stanley","ticker":"MS","date":"2026-07-15","time":"BMO","sector":"Financials","description":"Investment bank and leading wealth and asset manager.","epsEstimate":"","revenueEstimate":"","note":"Wealth-management inflows and IB pipeline"},
-    {"name":"Johnson & Johnson","ticker":"JNJ","date":"2026-07-15","time":"BMO","sector":"Healthcare","description":"Diversified healthcare giant spanning innovative pharmaceuticals and medtech devices.","epsEstimate":"","revenueEstimate":"","note":"First Dow healthcare bellwether of the season"},
-    {"name":"BlackRock","ticker":"BLK","date":"2026-07-15","time":"BMO","sector":"Financials","description":"World's largest asset manager and operator of the iShares ETF franchise.","epsEstimate":"","revenueEstimate":"","note":"Record AUM and net flows in focus"},
-    {"name":"PNC Financial Services","ticker":"PNC","date":"2026-07-15","time":"BMO","sector":"Financials","description":"Large U.S. super-regional bank with national retail and commercial lending.","epsEstimate":"","revenueEstimate":"","note":"Regional-bank credit and NIM read"},
-    {"name":"Bank of New York Mellon","ticker":"BK","date":"2026-07-15","time":"BMO","sector":"Financials","description":"World's largest custody bank, safeguarding and servicing institutional assets.","epsEstimate":"","revenueEstimate":"","note":"Custody/asset-servicing fee trends"},
-    {"name":"ASML Holding","ticker":"ASML","date":"2026-07-15","time":"BMO","sector":"Technology","description":"Dutch maker of the EUV lithography machines essential to advanced chip manufacturing.","epsEstimate":"","revenueEstimate":"","note":"Key AI-capex and semiconductor bookings bellwether"},
-    {"name":"Kinder Morgan","ticker":"KMI","date":"2026-07-15","time":"AMC","sector":"Energy","description":"Operator of one of North America's largest natural gas pipeline and energy-infrastructure networks.","epsEstimate":"","revenueEstimate":"","note":"Natural gas volumes and LNG-export demand"},
-    {"name":"J.B. Hunt Transport Services","ticker":"JBHT","date":"2026-07-15","time":"AMC","sector":"Industrials","description":"Freight transportation and logistics firm spanning intermodal, trucking, and brokerage.","epsEstimate":"","revenueEstimate":"","note":"Early read on freight-market recovery"},
-    {"name":"M&T Bank","ticker":"MTB","date":"2026-07-15","time":"BMO","sector":"Financials","description":"Northeast U.S. regional bank focused on commercial and community lending.","epsEstimate":"","revenueEstimate":"","note":"Commercial real estate credit watch"},
-    {"name":"UnitedHealth Group","ticker":"UNH","date":"2026-07-16","time":"BMO","sector":"Healthcare","description":"Largest U.S. health insurer and owner of the Optum health-services businesses.","epsEstimate":"","revenueEstimate":"","note":"Medical-cost trend the market's key focus"},
-    {"name":"U.S. Bancorp","ticker":"USB","date":"2026-07-16","time":"BMO","sector":"Financials","description":"Large U.S. super-regional bank with strong payments and consumer franchises.","epsEstimate":"","revenueEstimate":"","note":"Fee income and efficiency progress"},
-    {"name":"State Street","ticker":"STT","date":"2026-07-16","time":"BMO","sector":"Financials","description":"Custody bank and asset manager behind the SPDR ETF lineup.","epsEstimate":"","revenueEstimate":"","note":"Servicing wins and net interest income"},
-    {"name":"Abbott Laboratories","ticker":"ABT","date":"2026-07-16","time":"BMO","sector":"Healthcare","description":"Diversified medical-products company spanning devices, diagnostics, and nutrition.","epsEstimate":"","revenueEstimate":"","note":"Diabetes-device (Libre) growth in focus"},
-    {"name":"Elevance Health","ticker":"ELV","date":"2026-07-16","time":"BMO","sector":"Healthcare","description":"Major health insurer operating Blue Cross Blue Shield plans across many states.","epsEstimate":"$6.20","revenueEstimate":"","note":"Managed-care cost trends alongside UNH"},
-    {"name":"Citizens Financial Group","ticker":"CFG","date":"2026-07-16","time":"BMO","sector":"Financials","description":"New England-based regional bank with retail and commercial operations.","epsEstimate":"","revenueEstimate":"","note":"Regional-bank NIM and loan growth"},
-    {"name":"GE Aerospace","ticker":"GE","date":"2026-07-16","time":"BMO","sector":"Industrials","description":"Maker and servicer of commercial and military jet engines.","epsEstimate":"","revenueEstimate":"","note":"Aftermarket demand and aerospace supply chain"},
-    {"name":"Taiwan Semiconductor Manufacturing","ticker":"TSM","date":"2026-07-16","time":"BMO","sector":"Technology","description":"World's largest contract chipmaker, fabricating advanced processors for Apple, Nvidia, and others.","epsEstimate":"","revenueEstimate":"","note":"Premier AI-chip-demand bellwether"},
-    {"name":"Netflix","ticker":"NFLX","date":"2026-07-16","time":"AMC","sector":"Communication Services","description":"Global streaming-video leader expanding into advertising and live content.","epsEstimate":"","revenueEstimate":"","note":"First marquee tech-adjacent name; ad-tier and engagement trends"},
-    {"name":"Fifth Third Bancorp","ticker":"FITB","date":"2026-07-17","time":"BMO","sector":"Financials","description":"Midwest-based regional bank with consumer and commercial lending.","epsEstimate":"","revenueEstimate":"","note":"Regional-bank read to close the week"},
-    {"name":"Truist Financial","ticker":"TFC","date":"2026-07-17","time":"BMO","sector":"Financials","description":"Large Southeast U.S. regional bank formed from the BB&T-SunTrust merger.","epsEstimate":"","revenueEstimate":"","note":"Post-insurance-sale capital and credit trends"},
-    {"name":"Domino's Pizza","ticker":"DPZ","date":"2026-07-20","time":"BMO","sector":"Consumer Discretionary","description":"World's largest pizza delivery chain operating a heavily franchised restaurant network.","epsEstimate":"","revenueEstimate":"","note":"Kicks off the week; early read on consumer spending"},
-    {"name":"General Motors","ticker":"GM","date":"2026-07-21","time":"BMO","sector":"Consumer Discretionary","description":"Detroit automaker producing Chevrolet, GMC, Buick and Cadillac vehicles.","epsEstimate":"","revenueEstimate":"","note":"Tariff and EV cost pressures in focus"},
-    {"name":"Northrop Grumman","ticker":"NOC","date":"2026-07-21","time":"BMO","sector":"Industrials","description":"Aerospace and defense contractor specializing in stealth aircraft, missiles and space systems.","epsEstimate":"","revenueEstimate":"","note":"Defense-budget beneficiary"},
-    {"name":"Capital One Financial","ticker":"COF","date":"2026-07-21","time":"AMC","sector":"Financials","description":"Consumer-focused bank and credit-card lender now integrating Discover.","epsEstimate":"","revenueEstimate":"","note":"First full read post-Discover acquisition"},
-    {"name":"Halliburton","ticker":"HAL","date":"2026-07-21","time":"BMO","sector":"Energy","description":"Oilfield services provider for drilling and well completions.","epsEstimate":"","revenueEstimate":"","note":"Barometer for global drilling activity"},
-    {"name":"Tesla","ticker":"TSLA","date":"2026-07-22","time":"AMC","sector":"Consumer Discretionary","description":"Electric-vehicle, energy-storage and autonomy company.","epsEstimate":"","revenueEstimate":"","note":"Marquee report; deliveries, margins and robotaxi in focus"},
-    {"name":"Alphabet","ticker":"GOOGL","date":"2026-07-22","time":"AMC","sector":"Communication Services","description":"Parent of Google Search, YouTube, Google Cloud and Waymo.","epsEstimate":"$2.64","revenueEstimate":"$107.0B","note":"Big Tech bellwether; AI and cloud spend watched"},
-    {"name":"International Business Machines","ticker":"IBM","date":"2026-07-22","time":"AMC","sector":"Technology","description":"Enterprise software, consulting and hybrid-cloud/AI infrastructure company.","epsEstimate":"","revenueEstimate":"","note":"Software and AI bookings in focus"},
-    {"name":"Texas Instruments","ticker":"TXN","date":"2026-07-22","time":"AMC","sector":"Technology","description":"Maker of analog and embedded-processing semiconductors.","epsEstimate":"","revenueEstimate":"","note":"Read on analog chip demand cycle"},
-    {"name":"AT&T","ticker":"T","date":"2026-07-22","time":"BMO","sector":"Communication Services","description":"Telecom carrier providing wireless and fiber broadband service.","epsEstimate":"","revenueEstimate":"","note":"Subscriber adds and fiber growth"},
-    {"name":"Philip Morris International","ticker":"PM","date":"2026-07-22","time":"BMO","sector":"Consumer Staples","description":"Global tobacco company behind Marlboro (ex-US), IQOS and Zyn.","epsEstimate":"","revenueEstimate":"","note":"Smoke-free product momentum"},
-    {"name":"ServiceNow","ticker":"NOW","date":"2026-07-22","time":"AMC","sector":"Technology","description":"Enterprise workflow-automation and IT service-management software provider.","epsEstimate":"","revenueEstimate":"","note":"AI agent adoption and subscription growth"},
-    {"name":"Southwest Airlines","ticker":"LUV","date":"2026-07-22","time":"BMO","sector":"Industrials","description":"Low-cost US domestic passenger airline.","epsEstimate":"","revenueEstimate":"","note":"Rolling out assigned seating and bag fees"},
-    {"name":"CSX","ticker":"CSX","date":"2026-07-22","time":"AMC","sector":"Industrials","description":"Eastern US Class I freight railroad.","epsEstimate":"","revenueEstimate":"","note":"Amid rail-merger speculation"},
-    {"name":"Fiserv","ticker":"FI","date":"2026-07-22","time":"BMO","sector":"Financials","description":"Payments and financial-technology provider behind the Clover POS platform.","epsEstimate":"","revenueEstimate":"","note":"Clover and merchant-volume growth scrutinized"},
-    {"name":"Molina Healthcare","ticker":"MOH","date":"2026-07-22","time":"AMC","sector":"Healthcare","description":"Managed-care insurer focused on Medicaid and Medicare members.","epsEstimate":"","revenueEstimate":"","note":"Medicaid cost trends in focus"},
-    {"name":"GE Vernova","ticker":"GEV","date":"2026-07-22","time":"BMO","sector":"Industrials","description":"Power, wind and grid equipment company spun out of GE.","epsEstimate":"","revenueEstimate":"","note":"AI-driven electricity demand play"},
-    {"name":"General Dynamics","ticker":"GD","date":"2026-07-22","time":"BMO","sector":"Industrials","description":"Defense contractor making Gulfstream jets, submarines and combat vehicles.","epsEstimate":"","revenueEstimate":"","note":""},
-    {"name":"Lockheed Martin","ticker":"LMT","date":"2026-07-23","time":"BMO","sector":"Industrials","description":"World's largest defense contractor and maker of the F-35 fighter.","epsEstimate":"","revenueEstimate":"","note":""},
-    {"name":"Honeywell International","ticker":"HON","date":"2026-07-23","time":"BMO","sector":"Industrials","description":"Diversified industrial in aerospace, automation and advanced materials.","epsEstimate":"","revenueEstimate":"","note":"Planned breakup into three companies"},
-    {"name":"RTX","ticker":"RTX","date":"2026-07-23","time":"BMO","sector":"Industrials","description":"Aerospace and defense maker spanning Pratt & Whitney, Raytheon and Collins.","epsEstimate":"","revenueEstimate":"","note":""},
-    {"name":"Intel","ticker":"INTC","date":"2026-07-23","time":"AMC","sector":"Technology","description":"Chipmaker and foundry rebuilding its manufacturing edge.","epsEstimate":"","revenueEstimate":"","note":"Turnaround and foundry progress watched"},
-    {"name":"Union Pacific","ticker":"UNP","date":"2026-07-23","time":"BMO","sector":"Industrials","description":"Largest US railroad, operating across the western United States.","epsEstimate":"","revenueEstimate":"","note":"Amid Norfolk Southern merger talks"},
-    {"name":"T-Mobile US","ticker":"TMUS","date":"2026-07-23","time":"BMO","sector":"Communication Services","description":"Wireless carrier known for its Un-carrier strategy.","epsEstimate":"","revenueEstimate":"","note":"Postpaid net-add leadership"},
-    {"name":"Blackstone","ticker":"BX","date":"2026-07-23","time":"BMO","sector":"Financials","description":"World's largest alternative-asset manager across real estate, credit and PE.","epsEstimate":"","revenueEstimate":"","note":"AUM inflows and realizations in focus"},
-    {"name":"Thermo Fisher Scientific","ticker":"TMO","date":"2026-07-23","time":"BMO","sector":"Healthcare","description":"Supplier of lab equipment, reagents and diagnostics to life-sciences customers.","epsEstimate":"","revenueEstimate":"","note":""},
-    {"name":"Newmont","ticker":"NEM","date":"2026-07-23","time":"AMC","sector":"Materials","description":"World's largest gold-mining company.","epsEstimate":"","revenueEstimate":"","note":"Leverage to record gold prices"},
-    {"name":"Nasdaq","ticker":"NDAQ","date":"2026-07-23","time":"BMO","sector":"Financials","description":"Stock-exchange operator and financial-technology and data provider.","epsEstimate":"","revenueEstimate":"","note":""},
-    {"name":"Verizon Communications","ticker":"VZ","date":"2026-07-24","time":"BMO","sector":"Communication Services","description":"Wireless and broadband telecom carrier.","epsEstimate":"","revenueEstimate":"","note":"Closes out the mega-cap week"},
-    {"name":"Charter Communications","ticker":"CHTR","date":"2026-07-24","time":"BMO","sector":"Communication Services","description":"Cable broadband and video provider under the Spectrum brand.","epsEstimate":"","revenueEstimate":"","note":"Broadband subscriber trends"},
-    {"name":"HCA Healthcare","ticker":"HCA","date":"2026-07-24","time":"BMO","sector":"Healthcare","description":"Largest US for-profit hospital operator.","epsEstimate":"","revenueEstimate":"","note":""},
-    {"name":"Nucor","ticker":"NUE","date":"2026-07-27","time":"AMC","sector":"Materials","description":"Largest US steel producer.","epsEstimate":"$4.50","revenueEstimate":"$10.13B","note":"Steel pricing and tariff bellwether"},
-    {"name":"Cadence Design Systems","ticker":"CDNS","date":"2026-07-27","time":"AMC","sector":"Technology","description":"Provides chip-design software and IP.","epsEstimate":"$2.05","revenueEstimate":"$1.58B","note":"AI-chip design demand proxy"},
-    {"name":"Whirlpool","ticker":"WHR","date":"2026-07-27","time":"AMC","sector":"Consumer Discretionary","description":"Manufactures home appliances.","epsEstimate":"$0.13","revenueEstimate":"$3.56B","note":"Housing and tariff sensitivity"},
-    {"name":"Universal Health Services","ticker":"UHS","date":"2026-07-27","time":"AMC","sector":"Healthcare","description":"Operates acute-care and behavioral-health hospitals.","epsEstimate":"$5.92","revenueEstimate":"$4.58B","note":"Hospital utilization trends"},
-    {"name":"Enterprise Products Partners","ticker":"EPD","date":"2026-07-27","time":"BMO","sector":"Energy","description":"Midstream energy pipelines and processing MLP.","epsEstimate":"$0.74","revenueEstimate":"$13.57B","note":"Distribution coverage watched by income investors"},
-    {"name":"Microsoft","ticker":"MSFT","date":"2026-07-28","time":"AMC","sector":"Technology","description":"Develops software, cloud computing (Azure), productivity apps, and AI services.","epsEstimate":"","revenueEstimate":"","note":"Fiscal Q4; Azure growth and AI capex are the key market movers"},
-    {"name":"Visa","ticker":"V","date":"2026-07-28","time":"AMC","sector":"Financials","description":"Operates the world's largest electronic payments network.","epsEstimate":"","revenueEstimate":"","note":"Consumer-spending bellwether; fiscal Q3"},
-    {"name":"Boeing","ticker":"BA","date":"2026-07-28","time":"BMO","sector":"Industrials","description":"Manufactures commercial jets, defense systems, and space hardware.","epsEstimate":"","revenueEstimate":"","note":"737 MAX/787 production rates and cash burn watched closely"},
-    {"name":"Coca-Cola","ticker":"KO","date":"2026-07-28","time":"BMO","sector":"Consumer Staples","description":"Sells nonalcoholic beverages worldwide.","epsEstimate":"$0.92","revenueEstimate":"$13.18B","note":"Pricing power and volume trends in focus"},
-    {"name":"PayPal","ticker":"PYPL","date":"2026-07-28","time":"BMO","sector":"Financials","description":"Runs digital payments and the Venmo network.","epsEstimate":"$1.28","revenueEstimate":"$8.47B","note":"Branded checkout growth and margins key"},
-    {"name":"Ford Motor","ticker":"F","date":"2026-07-28","time":"AMC","sector":"Consumer Discretionary","description":"Designs and manufactures cars, trucks, and EVs.","epsEstimate":"$0.35","revenueEstimate":"$47.61B","note":"EV losses and tariff impacts in focus"},
-    {"name":"Starbucks","ticker":"SBUX","date":"2026-07-28","time":"AMC","sector":"Consumer Discretionary","description":"Operates the global coffeehouse chain.","epsEstimate":"","revenueEstimate":"","note":"Fiscal Q3; turnaround and same-store sales watched"},
-    {"name":"Booking Holdings","ticker":"BKNG","date":"2026-07-28","time":"AMC","sector":"Consumer Discretionary","description":"Runs online travel brands including Booking.com and Priceline.","epsEstimate":"","revenueEstimate":"","note":"Travel-demand bellwether"},
-    {"name":"Hilton Worldwide","ticker":"HLT","date":"2026-07-28","time":"BMO","sector":"Consumer Discretionary","description":"Franchises and manages hotels globally.","epsEstimate":"$2.27","revenueEstimate":"$3.32B","note":"RevPAR trends signal travel health"},
-    {"name":"NXP Semiconductors","ticker":"NXPI","date":"2026-07-28","time":"AMC","sector":"Technology","description":"Makes chips for automotive and industrial markets.","epsEstimate":"$3.54","revenueEstimate":"$3.45B","note":"Auto-chip demand read-through"},
-    {"name":"Meta Platforms","ticker":"META","date":"2026-07-29","time":"AMC","sector":"Communication Services","description":"Runs Facebook, Instagram, WhatsApp, and Reality Labs.","epsEstimate":"","revenueEstimate":"","note":"Ad growth and massive AI capex are focal points"},
-    {"name":"Procter & Gamble","ticker":"PG","date":"2026-07-29","time":"BMO","sector":"Consumer Staples","description":"Makes household and personal-care brands.","epsEstimate":"","revenueEstimate":"","note":"Fiscal Q4; organic volume and pricing key"},
-    {"name":"McDonald's","ticker":"MCD","date":"2026-07-29","time":"BMO","sector":"Consumer Discretionary","description":"World's largest fast-food franchise.","epsEstimate":"","revenueEstimate":"","note":"Low-income consumer and traffic trends watched"},
-    {"name":"Robinhood Markets","ticker":"HOOD","date":"2026-07-29","time":"AMC","sector":"Financials","description":"Commission-free trading and crypto brokerage app.","epsEstimate":"","revenueEstimate":"","note":"Crypto and options volumes drive results"},
-    {"name":"Pfizer","ticker":"PFE","date":"2026-07-29","time":"BMO","sector":"Healthcare","description":"Global pharmaceutical maker.","epsEstimate":"","revenueEstimate":"","note":"Post-COVID revenue base and pipeline in focus"},
-    {"name":"Kraft Heinz","ticker":"KHC","date":"2026-07-29","time":"BMO","sector":"Consumer Staples","description":"Packaged-food and condiments maker.","epsEstimate":"","revenueEstimate":"","note":"Volume trends amid planned company split"},
-    {"name":"Automatic Data Processing","ticker":"ADP","date":"2026-07-29","time":"BMO","sector":"Industrials","description":"Provides payroll and HR outsourcing services.","epsEstimate":"$2.59","revenueEstimate":"$5.44B","note":"Employment and wage-growth read-through"},
-    {"name":"Chipotle Mexican Grill","ticker":"CMG","date":"2026-07-29","time":"AMC","sector":"Consumer Discretionary","description":"Operates fast-casual Mexican restaurants.","epsEstimate":"$0.32","revenueEstimate":"$3.33B","note":"Same-store sales and traffic key"},
-    {"name":"Boston Scientific","ticker":"BSX","date":"2026-07-29","time":"BMO","sector":"Healthcare","description":"Makes medical devices for cardiology and more.","epsEstimate":"$0.83","revenueEstimate":"$5.37B","note":"Med-tech growth leader"},
-    {"name":"eBay","ticker":"EBAY","date":"2026-07-29","time":"AMC","sector":"Consumer Discretionary","description":"Operates a global e-commerce marketplace.","epsEstimate":"$1.52","revenueEstimate":"$3.02B","note":"GMV trends watched"},
-    {"name":"Carvana","ticker":"CVNA","date":"2026-07-29","time":"AMC","sector":"Consumer Discretionary","description":"Online used-car retailer.","epsEstimate":"$0.42","revenueEstimate":"$6.88B","note":"Unit growth and margins; high short interest"},
-    {"name":"Equinix","ticker":"EQIX","date":"2026-07-29","time":"AMC","sector":"Real Estate","description":"Operates data centers as a REIT.","epsEstimate":"$4.78","revenueEstimate":"$2.59B","note":"AI-driven data-center demand proxy"},
-    {"name":"Cognizant Technology Solutions","ticker":"CTSH","date":"2026-07-29","time":"BMO","sector":"Technology","description":"Provides IT consulting and outsourcing.","epsEstimate":"$1.38","revenueEstimate":"$5.49B","note":"IT-spending demand read-through"},
-    {"name":"Apple","ticker":"AAPL","date":"2026-07-30","time":"AMC","sector":"Technology","description":"Designs iPhones, Macs, wearables, and services.","epsEstimate":"$1.88","revenueEstimate":"$108.86B","note":"iPhone demand and Services growth are focal"},
-    {"name":"Amazon.com","ticker":"AMZN","date":"2026-07-30","time":"AMC","sector":"Consumer Discretionary","description":"Runs e-commerce, AWS cloud, and advertising.","epsEstimate":"$1.82","revenueEstimate":"$196.14B","note":"AWS growth and retail margins drive the stock"},
-    {"name":"Mastercard","ticker":"MA","date":"2026-07-30","time":"BMO","sector":"Financials","description":"Operates a global payments network.","epsEstimate":"","revenueEstimate":"","note":"Cross-border spend and consumer health bellwether"},
-    {"name":"Coinbase Global","ticker":"COIN","date":"2026-07-30","time":"AMC","sector":"Financials","description":"Largest US crypto exchange.","epsEstimate":"","revenueEstimate":"","note":"Trading volumes and crypto prices drive results"},
-    {"name":"Cigna Group","ticker":"CI","date":"2026-07-30","time":"BMO","sector":"Healthcare","description":"Health insurer and pharmacy-benefits manager.","epsEstimate":"$7.58","revenueEstimate":"$70.18B","note":"Medical-cost trend in focus"},
-    {"name":"Bristol Myers Squibb","ticker":"BMY","date":"2026-07-30","time":"BMO","sector":"Healthcare","description":"Global biopharmaceutical company.","epsEstimate":"$1.62","revenueEstimate":"$11.70B","note":"New-product ramp offsetting patent cliffs"},
-    {"name":"Altria Group","ticker":"MO","date":"2026-07-30","time":"BMO","sector":"Consumer Staples","description":"Makes cigarettes and smoke-free products.","epsEstimate":"$1.48","revenueEstimate":"$5.34B","note":"Cigarette volumes and dividend focus"},
-    {"name":"Anheuser-Busch InBev","ticker":"BUD","date":"2026-07-30","time":"BMO","sector":"Consumer Staples","description":"World's largest brewer.","epsEstimate":"$1.09","revenueEstimate":"$16.32B","note":"Global beer volume trends"},
-    {"name":"Exxon Mobil","ticker":"XOM","date":"2026-07-31","time":"BMO","sector":"Energy","description":"Integrated oil and gas supermajor.","epsEstimate":"","revenueEstimate":"","note":"Oil prices and buyback pace watched"},
-    {"name":"Chevron","ticker":"CVX","date":"2026-07-31","time":"BMO","sector":"Energy","description":"Integrated oil and gas supermajor.","epsEstimate":"$5.09","revenueEstimate":"$63.24B","note":"Cash flow and shareholder returns in focus"},
-    {"name":"AbbVie","ticker":"ABBV","date":"2026-07-31","time":"BMO","sector":"Healthcare","description":"Biopharma known for Humira, Skyrizi, and Rinvoq.","epsEstimate":"$3.79","revenueEstimate":"$16.77B","note":"Immunology growth post-Humira erosion"},
-    {"name":"Linde","ticker":"LIN","date":"2026-07-31","time":"BMO","sector":"Materials","description":"World's largest industrial-gas supplier.","epsEstimate":"$4.48","revenueEstimate":"$9.00B","note":"Pricing discipline and margins"},
-    {"name":"Colgate-Palmolive","ticker":"CL","date":"2026-07-31","time":"BMO","sector":"Consumer Staples","description":"Makes oral, personal, and home-care products.","epsEstimate":"$0.95","revenueEstimate":"$5.36B","note":"Organic sales and emerging-market demand"},
-    {"name":"Moderna","ticker":"MRNA","date":"2026-07-31","time":"BMO","sector":"Healthcare","description":"mRNA vaccine and therapeutics developer.","epsEstimate":"-$2.00","revenueEstimate":"$101.75M","note":"Cash burn and pipeline milestones watched"},
-    {"name":"T. Rowe Price Group","ticker":"TROW","date":"2026-07-31","time":"BMO","sector":"Financials","description":"Asset manager offering mutual funds and ETFs.","epsEstimate":"$2.35","revenueEstimate":"$1.83B","note":"Net flows and AUM trends"},
-    {"name":"LyondellBasell Industries","ticker":"LYB","date":"2026-07-31","time":"BMO","sector":"Materials","description":"Global plastics and chemicals producer.","epsEstimate":"$3.33","revenueEstimate":"$9.30B","note":"Chemical-cycle margins"},
-    {"name":"Magna International","ticker":"MGA","date":"2026-07-31","time":"BMO","sector":"Consumer Discretionary","description":"Global auto-parts supplier.","epsEstimate":"$1.52","revenueEstimate":"$10.25B","note":"Auto-production and tariff read-through"}
+    {"name":"FactSet Research Systems","ticker":"FDS","date":"2026-07-01","time":"BMO","sector":"Financials","description":"Provides financial data, analytics, and software to investment professionals.","epsEstimate":"$4.44","revenueEstimate":"$617.9M","note":"Fiscal Q3 read on financial-data spending","reported":true,"actualRevenue":"$622.9M","actualEps":"$4.53","revStatus":"beat","epsStatus":"beat","reportedDate":"2026-07-01","surpriseNote":"Revenue and adj. EPS beat; reaffirmed FY26 guidance"},
+    {"name":"General Mills","ticker":"GIS","date":"2026-07-01","time":"BMO","sector":"Consumer Staples","description":"Makes packaged foods including cereals, snacks, and pet food brands like Cheerios and Blue Buffalo.","epsEstimate":"$0.80","revenueEstimate":"$4.59B","note":"Early staples bellwether on volume vs. pricing","reported":true,"actualRevenue":"$4.6B","actualEps":"$0.95","revStatus":"beat","epsStatus":"beat","reportedDate":"2026-07-01","surpriseNote":"Adj. EPS strong beat; GAAP hit by non-cash goodwill/brand impairment"},
+    {"name":"MSC Industrial Direct","ticker":"MSM","date":"2026-07-01","time":"BMO","sector":"Industrials","description":"Distributes metalworking and MRO products to manufacturers.","epsEstimate":"$1.28","revenueEstimate":"$1.03B","note":"Gauge of US manufacturing demand","reported":true,"actualRevenue":"$1.05B","actualEps":"$1.43","revStatus":"beat","epsStatus":"beat","reportedDate":"2026-07-01","surpriseNote":"Beat on both lines; sales up 7.8% YoY"},
+    {"name":"National Beverage","ticker":"FIZZ","date":"2026-07-01","time":"BMO","sector":"Consumer Staples","description":"Produces sparkling waters and soft drinks, best known for the LaCroix brand.","epsEstimate":"$0.47","revenueEstimate":"$294.8M","note":"","reported":true,"actualRevenue":"$297.1M","actualEps":"$0.43","revStatus":"beat","epsStatus":"miss","reportedDate":"2026-07-01","surpriseNote":"Revenue edged estimate, EPS light; declared $3.25 special dividend"},
+    {"name":"UniFirst","ticker":"UNF","date":"2026-07-01","time":"BMO","sector":"Industrials","description":"Supplies and launders workplace uniforms and facility service products for businesses.","epsEstimate":"$1.93","revenueEstimate":"$627.7M","note":"","reported":true,"actualRevenue":"$634.4M","actualEps":"$2.17","revStatus":"beat","epsStatus":"beat","reportedDate":"2026-07-01","surpriseNote":"Beat on both; GAAP EPS pressured by Cintas merger costs"},
+    {"name":"Greenbrier Companies","ticker":"GBX","date":"2026-07-01","time":"AMC","sector":"Industrials","description":"Designs and manufactures freight railcars and provides railcar leasing and services.","epsEstimate":"$0.57","revenueEstimate":"$612.7M","note":"","reported":true,"actualRevenue":"$576.5M","actualEps":"$0.60","revStatus":"miss","epsStatus":"beat","reportedDate":"2026-07-01","surpriseNote":"Revenue miss, EPS beat; trimmed FY26 guidance"},
+    {"name":"Constellation Brands","ticker":"STZ","date":"2026-07-01","time":"BMO","sector":"Consumer Staples","description":"Sells beer, wine, and spirits, including Modelo and Corona in the US.","epsEstimate":"$3.27","revenueEstimate":"$2.42B","note":"Beer strength vs. wine/spirits divestitures in focus","reported":true,"actualRevenue":"$2.43B","actualEps":"$3.43","revStatus":"beat","epsStatus":"beat","reportedDate":"2026-06-30","surpriseNote":"Beat Street on beer strength (fiscal Q1 2027)"},
+    {"name":"Hub Group","ticker":"HUBG","date":"2026-07-30","time":"BMO","sector":"Industrials","description":"Provides intermodal, trucking, and logistics freight transportation services.","epsEstimate":"$0.29","revenueEstimate":"$888.2M","note":"Freight-market demand signal","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Lindsay Corporation","ticker":"LNN","date":"2026-07-02","time":"BMO","sector":"Industrials","description":"Makes center-pivot irrigation systems and road infrastructure products.","epsEstimate":"$1.14","revenueEstimate":"$157.8M","note":"Ag-equipment demand read","reported":true,"actualRevenue":"$160.8M","actualEps":"$1.53","revStatus":"beat","epsStatus":"beat","reportedDate":"2026-07-02","surpriseNote":"Beat both; infrastructure gains offset irrigation weakness"},
+    {"name":"Enerpac Tool Group","ticker":"EPAC","date":"2026-07-07","time":"AMC","sector":"Industrials","description":"Manufactures high-pressure hydraulic tools and controlled-force products for industrial use.","epsEstimate":"$0.49","revenueEstimate":"$165.6M","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Penguin Solutions","ticker":"PENG","date":"2026-07-07","time":"AMC","sector":"Technology","description":"Provides memory, LED, and AI/data-center integrated computing solutions.","epsEstimate":"$0.56","revenueEstimate":"$407.5M","note":"AI infrastructure demand read","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Kura Sushi USA","ticker":"KRUS","date":"2026-07-07","time":"AMC","sector":"Consumer Discretionary","description":"Operates a chain of revolving conveyor-belt sushi restaurants.","epsEstimate":"($0.05)","revenueEstimate":"$86.5M","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Helen of Troy","ticker":"HELE","date":"2026-07-08","time":"BMO","sector":"Consumer Discretionary","description":"Markets consumer housewares, health, and beauty brands like OXO, Hydro Flask, and Braun.","epsEstimate":"$0.02","revenueEstimate":"$374.6M","note":"Early consumer-discretionary read","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Levi Strauss","ticker":"LEVI","date":"2026-07-08","time":"AMC","sector":"Consumer Discretionary","description":"Designs and sells denim jeans and apparel under the Levi's and Dockers brands.","epsEstimate":"$0.24","revenueEstimate":"$1.52B","note":"Watch full-year guidance and tariff/DTC trends","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"PriceSmart","ticker":"PSMT","date":"2026-07-08","time":"AMC","sector":"Consumer Staples","description":"Operates membership warehouse clubs across Latin America and the Caribbean.","epsEstimate":"$1.32","revenueEstimate":"$1.43B","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"AZZ Inc.","ticker":"AZZ","date":"2026-07-08","time":"AMC","sector":"Industrials","description":"Provides hot-dip galvanizing and coil coating metal-protection services.","epsEstimate":"$1.69","revenueEstimate":"$434.6M","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Delta Air Lines","ticker":"DAL","date":"2026-07-09","time":"BMO","sector":"Industrials","description":"Operates a major US-based global passenger and cargo airline.","epsEstimate":"$1.49","revenueEstimate":"$17.47B","note":"First real read on summer travel demand","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"PepsiCo","ticker":"PEP","date":"2026-07-09","time":"BMO","sector":"Consumer Staples","description":"Global maker of beverages and snacks including Pepsi, Gatorade, and Frito-Lay chips.","epsEstimate":"$2.19","revenueEstimate":"$23.96B","note":"Unofficial kickoff of Q2 earnings season","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Simply Good Foods","ticker":"SMPL","date":"2026-07-09","time":"BMO","sector":"Consumer Staples","description":"Sells nutritional snacks and shakes under the Atkins and Quest brands.","epsEstimate":"$0.35","revenueEstimate":"$333.0M","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"WD-40 Company","ticker":"WDFC","date":"2026-07-09","time":"AMC","sector":"Consumer Staples","description":"Makes maintenance lubricants and cleaning products, led by its flagship WD-40 spray.","epsEstimate":"$1.58","revenueEstimate":"$172.8M","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Fastenal","ticker":"FAST","date":"2026-07-13","time":"BMO","sector":"Industrials","description":"Distributor of industrial and construction fasteners, tools, and supplies through a vast branch and vending network.","epsEstimate":"","revenueEstimate":"","note":"First S&P 500 name of Q2 season; industrial-demand bellwether","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"JPMorgan Chase","ticker":"JPM","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Largest U.S. bank by assets, spanning consumer banking, investment banking, and trading.","epsEstimate":"","revenueEstimate":"","note":"Unofficial kickoff of bank earnings; sets the tone","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Goldman Sachs","ticker":"GS","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Global investment bank and trading powerhouse with growing asset and wealth management arms.","epsEstimate":"","revenueEstimate":"","note":"Read on dealmaking and trading revenue","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Citigroup","ticker":"C","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Global bank with large consumer, markets, and treasury/services franchises.","epsEstimate":"","revenueEstimate":"","note":"Multi-year turnaround progress in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Wells Fargo","ticker":"WFC","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Large U.S. consumer and commercial bank with heavy mortgage exposure.","epsEstimate":"","revenueEstimate":"","note":"Growth trajectory after asset-cap removal","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Bank of America","ticker":"BAC","date":"2026-07-14","time":"BMO","sector":"Financials","description":"Second-largest U.S. bank by assets, with vast retail deposit base and Merrill wealth arm.","epsEstimate":"","revenueEstimate":"","note":"Net interest income trend in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Morgan Stanley","ticker":"MS","date":"2026-07-15","time":"BMO","sector":"Financials","description":"Investment bank and leading wealth and asset manager.","epsEstimate":"","revenueEstimate":"","note":"Wealth-management inflows and IB pipeline","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Johnson & Johnson","ticker":"JNJ","date":"2026-07-15","time":"BMO","sector":"Healthcare","description":"Diversified healthcare giant spanning innovative pharmaceuticals and medtech devices.","epsEstimate":"","revenueEstimate":"","note":"First Dow healthcare bellwether of the season","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"BlackRock","ticker":"BLK","date":"2026-07-15","time":"BMO","sector":"Financials","description":"World's largest asset manager and operator of the iShares ETF franchise.","epsEstimate":"","revenueEstimate":"","note":"Record AUM and net flows in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"PNC Financial Services","ticker":"PNC","date":"2026-07-15","time":"BMO","sector":"Financials","description":"Large U.S. super-regional bank with national retail and commercial lending.","epsEstimate":"","revenueEstimate":"","note":"Regional-bank credit and NIM read","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Bank of New York Mellon","ticker":"BK","date":"2026-07-15","time":"BMO","sector":"Financials","description":"World's largest custody bank, safeguarding and servicing institutional assets.","epsEstimate":"","revenueEstimate":"","note":"Custody/asset-servicing fee trends","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"ASML Holding","ticker":"ASML","date":"2026-07-15","time":"BMO","sector":"Technology","description":"Dutch maker of the EUV lithography machines essential to advanced chip manufacturing.","epsEstimate":"","revenueEstimate":"","note":"Key AI-capex and semiconductor bookings bellwether","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Kinder Morgan","ticker":"KMI","date":"2026-07-15","time":"AMC","sector":"Energy","description":"Operator of one of North America's largest natural gas pipeline and energy-infrastructure networks.","epsEstimate":"","revenueEstimate":"","note":"Natural gas volumes and LNG-export demand","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"J.B. Hunt Transport Services","ticker":"JBHT","date":"2026-07-15","time":"AMC","sector":"Industrials","description":"Freight transportation and logistics firm spanning intermodal, trucking, and brokerage.","epsEstimate":"","revenueEstimate":"","note":"Early read on freight-market recovery","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"M&T Bank","ticker":"MTB","date":"2026-07-15","time":"BMO","sector":"Financials","description":"Northeast U.S. regional bank focused on commercial and community lending.","epsEstimate":"","revenueEstimate":"","note":"Commercial real estate credit watch","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"UnitedHealth Group","ticker":"UNH","date":"2026-07-16","time":"BMO","sector":"Healthcare","description":"Largest U.S. health insurer and owner of the Optum health-services businesses.","epsEstimate":"","revenueEstimate":"","note":"Medical-cost trend the market's key focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"U.S. Bancorp","ticker":"USB","date":"2026-07-16","time":"BMO","sector":"Financials","description":"Large U.S. super-regional bank with strong payments and consumer franchises.","epsEstimate":"","revenueEstimate":"","note":"Fee income and efficiency progress","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"State Street","ticker":"STT","date":"2026-07-16","time":"BMO","sector":"Financials","description":"Custody bank and asset manager behind the SPDR ETF lineup.","epsEstimate":"","revenueEstimate":"","note":"Servicing wins and net interest income","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Abbott Laboratories","ticker":"ABT","date":"2026-07-16","time":"BMO","sector":"Healthcare","description":"Diversified medical-products company spanning devices, diagnostics, and nutrition.","epsEstimate":"","revenueEstimate":"","note":"Diabetes-device (Libre) growth in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Elevance Health","ticker":"ELV","date":"2026-07-16","time":"BMO","sector":"Healthcare","description":"Major health insurer operating Blue Cross Blue Shield plans across many states.","epsEstimate":"$6.20","revenueEstimate":"","note":"Managed-care cost trends alongside UNH","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Citizens Financial Group","ticker":"CFG","date":"2026-07-16","time":"BMO","sector":"Financials","description":"New England-based regional bank with retail and commercial operations.","epsEstimate":"","revenueEstimate":"","note":"Regional-bank NIM and loan growth","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"GE Aerospace","ticker":"GE","date":"2026-07-16","time":"BMO","sector":"Industrials","description":"Maker and servicer of commercial and military jet engines.","epsEstimate":"","revenueEstimate":"","note":"Aftermarket demand and aerospace supply chain","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Taiwan Semiconductor Manufacturing","ticker":"TSM","date":"2026-07-16","time":"BMO","sector":"Technology","description":"World's largest contract chipmaker, fabricating advanced processors for Apple, Nvidia, and others.","epsEstimate":"","revenueEstimate":"","note":"Premier AI-chip-demand bellwether","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Netflix","ticker":"NFLX","date":"2026-07-16","time":"AMC","sector":"Communication Services","description":"Global streaming-video leader expanding into advertising and live content.","epsEstimate":"","revenueEstimate":"","note":"First marquee tech-adjacent name; ad-tier and engagement trends","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Fifth Third Bancorp","ticker":"FITB","date":"2026-07-17","time":"BMO","sector":"Financials","description":"Midwest-based regional bank with consumer and commercial lending.","epsEstimate":"","revenueEstimate":"","note":"Regional-bank read to close the week","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Truist Financial","ticker":"TFC","date":"2026-07-17","time":"BMO","sector":"Financials","description":"Large Southeast U.S. regional bank formed from the BB&T-SunTrust merger.","epsEstimate":"","revenueEstimate":"","note":"Post-insurance-sale capital and credit trends","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Domino's Pizza","ticker":"DPZ","date":"2026-07-20","time":"BMO","sector":"Consumer Discretionary","description":"World's largest pizza delivery chain operating a heavily franchised restaurant network.","epsEstimate":"","revenueEstimate":"","note":"Kicks off the week; early read on consumer spending","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"General Motors","ticker":"GM","date":"2026-07-21","time":"BMO","sector":"Consumer Discretionary","description":"Detroit automaker producing Chevrolet, GMC, Buick and Cadillac vehicles.","epsEstimate":"","revenueEstimate":"","note":"Tariff and EV cost pressures in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Northrop Grumman","ticker":"NOC","date":"2026-07-21","time":"BMO","sector":"Industrials","description":"Aerospace and defense contractor specializing in stealth aircraft, missiles and space systems.","epsEstimate":"","revenueEstimate":"","note":"Defense-budget beneficiary","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Capital One Financial","ticker":"COF","date":"2026-07-21","time":"AMC","sector":"Financials","description":"Consumer-focused bank and credit-card lender now integrating Discover.","epsEstimate":"","revenueEstimate":"","note":"First full read post-Discover acquisition","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Halliburton","ticker":"HAL","date":"2026-07-21","time":"BMO","sector":"Energy","description":"Oilfield services provider for drilling and well completions.","epsEstimate":"","revenueEstimate":"","note":"Barometer for global drilling activity","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Tesla","ticker":"TSLA","date":"2026-07-22","time":"AMC","sector":"Consumer Discretionary","description":"Electric-vehicle, energy-storage and autonomy company.","epsEstimate":"","revenueEstimate":"","note":"Marquee report; deliveries, margins and robotaxi in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Alphabet","ticker":"GOOGL","date":"2026-07-22","time":"AMC","sector":"Communication Services","description":"Parent of Google Search, YouTube, Google Cloud and Waymo.","epsEstimate":"$2.64","revenueEstimate":"$107.0B","note":"Big Tech bellwether; AI and cloud spend watched","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"International Business Machines","ticker":"IBM","date":"2026-07-22","time":"AMC","sector":"Technology","description":"Enterprise software, consulting and hybrid-cloud/AI infrastructure company.","epsEstimate":"","revenueEstimate":"","note":"Software and AI bookings in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Texas Instruments","ticker":"TXN","date":"2026-07-22","time":"AMC","sector":"Technology","description":"Maker of analog and embedded-processing semiconductors.","epsEstimate":"","revenueEstimate":"","note":"Read on analog chip demand cycle","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"AT&T","ticker":"T","date":"2026-07-22","time":"BMO","sector":"Communication Services","description":"Telecom carrier providing wireless and fiber broadband service.","epsEstimate":"","revenueEstimate":"","note":"Subscriber adds and fiber growth","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Philip Morris International","ticker":"PM","date":"2026-07-22","time":"BMO","sector":"Consumer Staples","description":"Global tobacco company behind Marlboro (ex-US), IQOS and Zyn.","epsEstimate":"","revenueEstimate":"","note":"Smoke-free product momentum","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"ServiceNow","ticker":"NOW","date":"2026-07-22","time":"AMC","sector":"Technology","description":"Enterprise workflow-automation and IT service-management software provider.","epsEstimate":"","revenueEstimate":"","note":"AI agent adoption and subscription growth","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Southwest Airlines","ticker":"LUV","date":"2026-07-22","time":"BMO","sector":"Industrials","description":"Low-cost US domestic passenger airline.","epsEstimate":"","revenueEstimate":"","note":"Rolling out assigned seating and bag fees","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"CSX","ticker":"CSX","date":"2026-07-22","time":"AMC","sector":"Industrials","description":"Eastern US Class I freight railroad.","epsEstimate":"","revenueEstimate":"","note":"Amid rail-merger speculation","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Fiserv","ticker":"FI","date":"2026-07-22","time":"BMO","sector":"Financials","description":"Payments and financial-technology provider behind the Clover POS platform.","epsEstimate":"","revenueEstimate":"","note":"Clover and merchant-volume growth scrutinized","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Molina Healthcare","ticker":"MOH","date":"2026-07-22","time":"AMC","sector":"Healthcare","description":"Managed-care insurer focused on Medicaid and Medicare members.","epsEstimate":"","revenueEstimate":"","note":"Medicaid cost trends in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"GE Vernova","ticker":"GEV","date":"2026-07-22","time":"BMO","sector":"Industrials","description":"Power, wind and grid equipment company spun out of GE.","epsEstimate":"","revenueEstimate":"","note":"AI-driven electricity demand play","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"General Dynamics","ticker":"GD","date":"2026-07-22","time":"BMO","sector":"Industrials","description":"Defense contractor making Gulfstream jets, submarines and combat vehicles.","epsEstimate":"","revenueEstimate":"","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Lockheed Martin","ticker":"LMT","date":"2026-07-23","time":"BMO","sector":"Industrials","description":"World's largest defense contractor and maker of the F-35 fighter.","epsEstimate":"","revenueEstimate":"","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Honeywell International","ticker":"HON","date":"2026-07-23","time":"BMO","sector":"Industrials","description":"Diversified industrial in aerospace, automation and advanced materials.","epsEstimate":"","revenueEstimate":"","note":"Planned breakup into three companies","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"RTX","ticker":"RTX","date":"2026-07-23","time":"BMO","sector":"Industrials","description":"Aerospace and defense maker spanning Pratt & Whitney, Raytheon and Collins.","epsEstimate":"","revenueEstimate":"","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Intel","ticker":"INTC","date":"2026-07-23","time":"AMC","sector":"Technology","description":"Chipmaker and foundry rebuilding its manufacturing edge.","epsEstimate":"","revenueEstimate":"","note":"Turnaround and foundry progress watched","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Union Pacific","ticker":"UNP","date":"2026-07-23","time":"BMO","sector":"Industrials","description":"Largest US railroad, operating across the western United States.","epsEstimate":"","revenueEstimate":"","note":"Amid Norfolk Southern merger talks","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"T-Mobile US","ticker":"TMUS","date":"2026-07-23","time":"BMO","sector":"Communication Services","description":"Wireless carrier known for its Un-carrier strategy.","epsEstimate":"","revenueEstimate":"","note":"Postpaid net-add leadership","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Blackstone","ticker":"BX","date":"2026-07-23","time":"BMO","sector":"Financials","description":"World's largest alternative-asset manager across real estate, credit and PE.","epsEstimate":"","revenueEstimate":"","note":"AUM inflows and realizations in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Thermo Fisher Scientific","ticker":"TMO","date":"2026-07-23","time":"BMO","sector":"Healthcare","description":"Supplier of lab equipment, reagents and diagnostics to life-sciences customers.","epsEstimate":"","revenueEstimate":"","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Newmont","ticker":"NEM","date":"2026-07-23","time":"AMC","sector":"Materials","description":"World's largest gold-mining company.","epsEstimate":"","revenueEstimate":"","note":"Leverage to record gold prices","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Nasdaq","ticker":"NDAQ","date":"2026-07-23","time":"BMO","sector":"Financials","description":"Stock-exchange operator and financial-technology and data provider.","epsEstimate":"","revenueEstimate":"","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Verizon Communications","ticker":"VZ","date":"2026-07-24","time":"BMO","sector":"Communication Services","description":"Wireless and broadband telecom carrier.","epsEstimate":"","revenueEstimate":"","note":"Closes out the mega-cap week","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Charter Communications","ticker":"CHTR","date":"2026-07-24","time":"BMO","sector":"Communication Services","description":"Cable broadband and video provider under the Spectrum brand.","epsEstimate":"","revenueEstimate":"","note":"Broadband subscriber trends","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"HCA Healthcare","ticker":"HCA","date":"2026-07-24","time":"BMO","sector":"Healthcare","description":"Largest US for-profit hospital operator.","epsEstimate":"","revenueEstimate":"","note":"","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Nucor","ticker":"NUE","date":"2026-07-27","time":"AMC","sector":"Materials","description":"Largest US steel producer.","epsEstimate":"$4.50","revenueEstimate":"$10.13B","note":"Steel pricing and tariff bellwether","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Cadence Design Systems","ticker":"CDNS","date":"2026-07-27","time":"AMC","sector":"Technology","description":"Provides chip-design software and IP.","epsEstimate":"$2.05","revenueEstimate":"$1.58B","note":"AI-chip design demand proxy","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Whirlpool","ticker":"WHR","date":"2026-07-27","time":"AMC","sector":"Consumer Discretionary","description":"Manufactures home appliances.","epsEstimate":"$0.13","revenueEstimate":"$3.56B","note":"Housing and tariff sensitivity","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Universal Health Services","ticker":"UHS","date":"2026-07-27","time":"AMC","sector":"Healthcare","description":"Operates acute-care and behavioral-health hospitals.","epsEstimate":"$5.92","revenueEstimate":"$4.58B","note":"Hospital utilization trends","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Enterprise Products Partners","ticker":"EPD","date":"2026-07-27","time":"BMO","sector":"Energy","description":"Midstream energy pipelines and processing MLP.","epsEstimate":"$0.74","revenueEstimate":"$13.57B","note":"Distribution coverage watched by income investors","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Microsoft","ticker":"MSFT","date":"2026-07-28","time":"AMC","sector":"Technology","description":"Develops software, cloud computing (Azure), productivity apps, and AI services.","epsEstimate":"","revenueEstimate":"","note":"Fiscal Q4; Azure growth and AI capex are the key market movers","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Visa","ticker":"V","date":"2026-07-28","time":"AMC","sector":"Financials","description":"Operates the world's largest electronic payments network.","epsEstimate":"","revenueEstimate":"","note":"Consumer-spending bellwether; fiscal Q3","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Boeing","ticker":"BA","date":"2026-07-28","time":"BMO","sector":"Industrials","description":"Manufactures commercial jets, defense systems, and space hardware.","epsEstimate":"","revenueEstimate":"","note":"737 MAX/787 production rates and cash burn watched closely","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Coca-Cola","ticker":"KO","date":"2026-07-28","time":"BMO","sector":"Consumer Staples","description":"Sells nonalcoholic beverages worldwide.","epsEstimate":"$0.92","revenueEstimate":"$13.18B","note":"Pricing power and volume trends in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"PayPal","ticker":"PYPL","date":"2026-07-28","time":"BMO","sector":"Financials","description":"Runs digital payments and the Venmo network.","epsEstimate":"$1.28","revenueEstimate":"$8.47B","note":"Branded checkout growth and margins key","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Ford Motor","ticker":"F","date":"2026-07-28","time":"AMC","sector":"Consumer Discretionary","description":"Designs and manufactures cars, trucks, and EVs.","epsEstimate":"$0.35","revenueEstimate":"$47.61B","note":"EV losses and tariff impacts in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Starbucks","ticker":"SBUX","date":"2026-07-28","time":"AMC","sector":"Consumer Discretionary","description":"Operates the global coffeehouse chain.","epsEstimate":"","revenueEstimate":"","note":"Fiscal Q3; turnaround and same-store sales watched","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Booking Holdings","ticker":"BKNG","date":"2026-07-28","time":"AMC","sector":"Consumer Discretionary","description":"Runs online travel brands including Booking.com and Priceline.","epsEstimate":"","revenueEstimate":"","note":"Travel-demand bellwether","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Hilton Worldwide","ticker":"HLT","date":"2026-07-28","time":"BMO","sector":"Consumer Discretionary","description":"Franchises and manages hotels globally.","epsEstimate":"$2.27","revenueEstimate":"$3.32B","note":"RevPAR trends signal travel health","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"NXP Semiconductors","ticker":"NXPI","date":"2026-07-28","time":"AMC","sector":"Technology","description":"Makes chips for automotive and industrial markets.","epsEstimate":"$3.54","revenueEstimate":"$3.45B","note":"Auto-chip demand read-through","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Meta Platforms","ticker":"META","date":"2026-07-29","time":"AMC","sector":"Communication Services","description":"Runs Facebook, Instagram, WhatsApp, and Reality Labs.","epsEstimate":"","revenueEstimate":"","note":"Ad growth and massive AI capex are focal points","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Procter & Gamble","ticker":"PG","date":"2026-07-29","time":"BMO","sector":"Consumer Staples","description":"Makes household and personal-care brands.","epsEstimate":"","revenueEstimate":"","note":"Fiscal Q4; organic volume and pricing key","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"McDonald's","ticker":"MCD","date":"2026-07-29","time":"BMO","sector":"Consumer Discretionary","description":"World's largest fast-food franchise.","epsEstimate":"","revenueEstimate":"","note":"Low-income consumer and traffic trends watched","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Robinhood Markets","ticker":"HOOD","date":"2026-07-29","time":"AMC","sector":"Financials","description":"Commission-free trading and crypto brokerage app.","epsEstimate":"","revenueEstimate":"","note":"Crypto and options volumes drive results","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Pfizer","ticker":"PFE","date":"2026-07-29","time":"BMO","sector":"Healthcare","description":"Global pharmaceutical maker.","epsEstimate":"","revenueEstimate":"","note":"Post-COVID revenue base and pipeline in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Kraft Heinz","ticker":"KHC","date":"2026-07-29","time":"BMO","sector":"Consumer Staples","description":"Packaged-food and condiments maker.","epsEstimate":"","revenueEstimate":"","note":"Volume trends amid planned company split","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Automatic Data Processing","ticker":"ADP","date":"2026-07-29","time":"BMO","sector":"Industrials","description":"Provides payroll and HR outsourcing services.","epsEstimate":"$2.59","revenueEstimate":"$5.44B","note":"Employment and wage-growth read-through","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Chipotle Mexican Grill","ticker":"CMG","date":"2026-07-29","time":"AMC","sector":"Consumer Discretionary","description":"Operates fast-casual Mexican restaurants.","epsEstimate":"$0.32","revenueEstimate":"$3.33B","note":"Same-store sales and traffic key","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Boston Scientific","ticker":"BSX","date":"2026-07-29","time":"BMO","sector":"Healthcare","description":"Makes medical devices for cardiology and more.","epsEstimate":"$0.83","revenueEstimate":"$5.37B","note":"Med-tech growth leader","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"eBay","ticker":"EBAY","date":"2026-07-29","time":"AMC","sector":"Consumer Discretionary","description":"Operates a global e-commerce marketplace.","epsEstimate":"$1.52","revenueEstimate":"$3.02B","note":"GMV trends watched","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Carvana","ticker":"CVNA","date":"2026-07-29","time":"AMC","sector":"Consumer Discretionary","description":"Online used-car retailer.","epsEstimate":"$0.42","revenueEstimate":"$6.88B","note":"Unit growth and margins; high short interest","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Equinix","ticker":"EQIX","date":"2026-07-29","time":"AMC","sector":"Real Estate","description":"Operates data centers as a REIT.","epsEstimate":"$4.78","revenueEstimate":"$2.59B","note":"AI-driven data-center demand proxy","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Cognizant Technology Solutions","ticker":"CTSH","date":"2026-07-29","time":"BMO","sector":"Technology","description":"Provides IT consulting and outsourcing.","epsEstimate":"$1.38","revenueEstimate":"$5.49B","note":"IT-spending demand read-through","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Apple","ticker":"AAPL","date":"2026-07-30","time":"AMC","sector":"Technology","description":"Designs iPhones, Macs, wearables, and services.","epsEstimate":"$1.88","revenueEstimate":"$108.86B","note":"iPhone demand and Services growth are focal","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Amazon.com","ticker":"AMZN","date":"2026-07-30","time":"AMC","sector":"Consumer Discretionary","description":"Runs e-commerce, AWS cloud, and advertising.","epsEstimate":"$1.82","revenueEstimate":"$196.14B","note":"AWS growth and retail margins drive the stock","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Mastercard","ticker":"MA","date":"2026-07-30","time":"BMO","sector":"Financials","description":"Operates a global payments network.","epsEstimate":"","revenueEstimate":"","note":"Cross-border spend and consumer health bellwether","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Coinbase Global","ticker":"COIN","date":"2026-07-30","time":"AMC","sector":"Financials","description":"Largest US crypto exchange.","epsEstimate":"","revenueEstimate":"","note":"Trading volumes and crypto prices drive results","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Cigna Group","ticker":"CI","date":"2026-07-30","time":"BMO","sector":"Healthcare","description":"Health insurer and pharmacy-benefits manager.","epsEstimate":"$7.58","revenueEstimate":"$70.18B","note":"Medical-cost trend in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Bristol Myers Squibb","ticker":"BMY","date":"2026-07-30","time":"BMO","sector":"Healthcare","description":"Global biopharmaceutical company.","epsEstimate":"$1.62","revenueEstimate":"$11.70B","note":"New-product ramp offsetting patent cliffs","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Altria Group","ticker":"MO","date":"2026-07-30","time":"BMO","sector":"Consumer Staples","description":"Makes cigarettes and smoke-free products.","epsEstimate":"$1.48","revenueEstimate":"$5.34B","note":"Cigarette volumes and dividend focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Anheuser-Busch InBev","ticker":"BUD","date":"2026-07-30","time":"BMO","sector":"Consumer Staples","description":"World's largest brewer.","epsEstimate":"$1.09","revenueEstimate":"$16.32B","note":"Global beer volume trends","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Exxon Mobil","ticker":"XOM","date":"2026-07-31","time":"BMO","sector":"Energy","description":"Integrated oil and gas supermajor.","epsEstimate":"","revenueEstimate":"","note":"Oil prices and buyback pace watched","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Chevron","ticker":"CVX","date":"2026-07-31","time":"BMO","sector":"Energy","description":"Integrated oil and gas supermajor.","epsEstimate":"$5.09","revenueEstimate":"$63.24B","note":"Cash flow and shareholder returns in focus","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"AbbVie","ticker":"ABBV","date":"2026-07-31","time":"BMO","sector":"Healthcare","description":"Biopharma known for Humira, Skyrizi, and Rinvoq.","epsEstimate":"$3.79","revenueEstimate":"$16.77B","note":"Immunology growth post-Humira erosion","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Linde","ticker":"LIN","date":"2026-07-31","time":"BMO","sector":"Materials","description":"World's largest industrial-gas supplier.","epsEstimate":"$4.48","revenueEstimate":"$9.00B","note":"Pricing discipline and margins","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Colgate-Palmolive","ticker":"CL","date":"2026-07-31","time":"BMO","sector":"Consumer Staples","description":"Makes oral, personal, and home-care products.","epsEstimate":"$0.95","revenueEstimate":"$5.36B","note":"Organic sales and emerging-market demand","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Moderna","ticker":"MRNA","date":"2026-07-31","time":"BMO","sector":"Healthcare","description":"mRNA vaccine and therapeutics developer.","epsEstimate":"-$2.00","revenueEstimate":"$101.75M","note":"Cash burn and pipeline milestones watched","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"T. Rowe Price Group","ticker":"TROW","date":"2026-07-31","time":"BMO","sector":"Financials","description":"Asset manager offering mutual funds and ETFs.","epsEstimate":"$2.35","revenueEstimate":"$1.83B","note":"Net flows and AUM trends","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"LyondellBasell Industries","ticker":"LYB","date":"2026-07-31","time":"BMO","sector":"Materials","description":"Global plastics and chemicals producer.","epsEstimate":"$3.33","revenueEstimate":"$9.30B","note":"Chemical-cycle margins","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""},
+    {"name":"Magna International","ticker":"MGA","date":"2026-07-31","time":"BMO","sector":"Consumer Discretionary","description":"Global auto-parts supplier.","epsEstimate":"$1.52","revenueEstimate":"$10.25B","note":"Auto-production and tariff read-through","reported":false,"actualRevenue":"","actualEps":"","revStatus":"","epsStatus":"","reportedDate":"","surpriseNote":""}
   ]
 };
 
@@ -392,6 +465,7 @@ function val(v){ return (v && String(v).trim() !== '') ? v : '—'; }
 const YEAR = 2026, MONTH = 6; // JS month 6 = July
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 let activeFilter = null;
+let reportedOnly = false;
 
 /* Group companies by day-of-month */
 const byDay = {};
@@ -410,6 +484,26 @@ Object.values(byDay).forEach(list => {
 document.getElementById('companyCount').textContent = DATA.companies.length;
 document.getElementById('asOfDate').textContent = fmtDate(DATA.asOf);
 document.getElementById('sourceLine').textContent = 'Sources: ' + DATA.sources.join('  ·  ');
+
+/* ==== Scoreboard (computed live from data) ==== */
+(function renderScoreboard(){
+  const reported = DATA.companies.filter(c => c.reported);
+  const tally = key => ({
+    beat: reported.filter(c => c[key] === 'beat').length,
+    miss: reported.filter(c => c[key] === 'miss').length
+  });
+  const rev = tally('revStatus'), eps = tally('epsStatus');
+  const group = (label, t) =>
+    `<span class="sb-group">${label}: ` +
+    `<span class="sb-beat">${t.beat} beat${t.beat===1?'':'s'}</span> / ` +
+    `<span class="sb-miss">${t.miss} miss${t.miss===1?'':'es'}</span></span>`;
+  document.getElementById('scoreboard').innerHTML =
+    `<span class="sb-count">${reported.length} of ${DATA.companies.length} reported</span>` +
+    (reported.length
+      ? `<span class="sb-sep">·</span>${group('Revenue', rev)}` +
+        `<span class="sb-sep">·</span>${group('EPS', eps)}`
+      : '');
+})();
 
 function fmtDate(iso){
   const [y,m,d] = iso.split('-').map(Number);
@@ -430,6 +524,14 @@ sectorsPresent.forEach(sec => {
 const clearBtn = document.getElementById('clearFilter');
 clearBtn.addEventListener('click', () => toggleFilter(null, true));
 
+const reportedBtn = document.getElementById('reportedToggle');
+reportedBtn.addEventListener('click', () => {
+  reportedOnly = !reportedOnly;
+  reportedBtn.classList.toggle('active', reportedOnly);
+  reportedBtn.setAttribute('aria-pressed', reportedOnly ? 'true' : 'false');
+  applyChipVisibility();
+});
+
 function toggleFilter(sec, force){
   activeFilter = (force || activeFilter === sec) ? null : sec;
   // legend chips
@@ -439,11 +541,17 @@ function toggleFilter(sec, force){
     chip.classList.toggle('dim', activeFilter && activeFilter !== s);
     chip.style.background = (activeFilter === s) ? sectorColor(s) : '#fff';
   });
-  // company chips
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.classList.toggle('faded', activeFilter && chip.dataset.sector !== activeFilter);
-  });
   clearBtn.style.display = activeFilter ? 'inline-block' : 'none';
+  applyChipVisibility();
+}
+
+/* Combined chip fading: sector filter AND/OR reported-only */
+function applyChipVisibility(){
+  document.querySelectorAll('.chip').forEach(chip => {
+    const secMismatch = activeFilter && chip.dataset.sector !== activeFilter;
+    const repMismatch = reportedOnly && chip.dataset.reported !== 'true';
+    chip.classList.toggle('faded', !!(secMismatch || repMismatch));
+  });
 }
 
 /* ==== Calendar grid ==== */
@@ -494,17 +602,34 @@ function timeTag(t){
   return '';
 }
 
+/* Map a beat/miss/inline status to a symbol + css class */
+function statusClass(s){ return s === 'beat' ? 'beat' : s === 'miss' ? 'miss' : 'inline'; }
+function statusSym(s){ return s === 'beat' ? '▲' : s === 'miss' ? '▼' : '◼'; }
+function statusWord(s){ return s === 'beat' ? 'beat' : s === 'miss' ? 'miss' : 'in line'; }
+
 function makeChip(c){
   const col = sectorColor(c.sector);
   const btn = document.createElement('button');
   btn.className = 'chip';
   btn.dataset.sector = c.sector;
-  btn.style.background = tint(col, 0.90);
-  btn.style.borderLeftColor = col;
+  btn.dataset.reported = c.reported ? 'true' : 'false';
+
+  let trailing = timeTag(c.time);
+  if (c.reported){
+    const rc = statusClass(c.revStatus), ec = statusClass(c.epsStatus);
+    btn.classList.add('reported', 'rev-' + rc);
+    // status-colored left border set via CSS class; leave background to CSS too
+    trailing =
+      `<span class="rstat ${rc}" title="Revenue ${statusWord(c.revStatus)}">${statusSym(c.revStatus)}</span>` +
+      `<span class="estat ${ec}" title="EPS ${statusWord(c.epsStatus)}"></span>`;
+  } else {
+    btn.style.background = tint(col, 0.90);
+    btn.style.borderLeftColor = col;
+  }
   btn.innerHTML =
     `<span class="tkr" style="color:${col}">${esc(c.ticker)}</span>` +
     `<span class="nm">${esc(c.name)}</span>` +
-    timeTag(c.time);
+    trailing;
   btn.addEventListener('click', () => openModal(c));
   btn.addEventListener('mouseenter', e => showTip(e, c));
   btn.addEventListener('mousemove', moveTip);
@@ -538,6 +663,40 @@ function timeSpelled(t){
   if (t === 'AMC') return 'After market close (AMC)';
   return 'Time not specified';
 }
+/* Build a reported metric row: Estimate → Actual + BEAT/MISS/IN LINE tag.
+   Revenue is the headline metric and is rendered first. Blank estimate => "—" and no tag. */
+function metricRow(label, est, act, status){
+  const hasEst = est != null && String(est).trim() !== '';
+  const tag = (hasEst && status)
+    ? `<span class="m-tagr ${statusClass(status)}">${statusWord(status).toUpperCase()}</span>`
+    : '';
+  return `<div class="m-row m-metric"><span class="k">${esc(label)}</span>` +
+    `<span class="v"><span class="est">${esc(val(est))}</span>` +
+    `<span class="arrow">→</span><span class="act">${esc(val(act))}</span>${tag}</span></div>`;
+}
+
+/* Results block: reported => actuals vs. estimates; else => estimates only. */
+function buildResults(c){
+  if (c.reported){
+    const when = (c.reportedDate && c.reportedDate.trim()) ? fmtDate(c.reportedDate)
+               : (c.date ? fmtDate(c.date) : '—');
+    let html = `<div class="m-status done"><span class="pulse"></span>Reported ${esc(when)}</div>`;
+    html += `<div class="m-rows">`;
+    html += metricRow('Revenue', c.revenueEstimate, c.actualRevenue, c.revStatus);
+    html += metricRow('EPS', c.epsEstimate, c.actualEps, c.epsStatus);
+    html += `</div>`;
+    if (c.surpriseNote && c.surpriseNote.trim()){
+      html += `<div class="m-surprise"><span class="lbl">Surprise</span>${esc(c.surpriseNote)}</div>`;
+    }
+    return html;
+  }
+  return `<div class="m-status pending">Not yet reported</div>` +
+    `<div class="m-rows">` +
+    `<div class="m-row"><span class="k">Estimated Revenue</span><span class="v">${esc(val(c.revenueEstimate))}</span></div>` +
+    `<div class="m-row"><span class="k">Estimated EPS</span><span class="v">${esc(val(c.epsEstimate))}</span></div>` +
+    `</div>`;
+}
+
 function openModal(c){
   hideTip();
   const col = sectorColor(c.sector);
@@ -551,8 +710,7 @@ function openModal(c){
   document.getElementById('mTime').textContent = timeSpelled(c.time);
 
   document.getElementById('mDesc').textContent = c.description || '—';
-  document.getElementById('mEps').textContent = val(c.epsEstimate);
-  document.getElementById('mRev').textContent = val(c.revenueEstimate);
+  document.getElementById('mResults').innerHTML = buildResults(c);
 
   const noteWrap = document.getElementById('mNoteWrap');
   if (c.note && c.note.trim()){
