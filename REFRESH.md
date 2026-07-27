@@ -34,7 +34,7 @@ schedule and any on-demand "refresh earnings" request).
    actuals + beat/miss. Keep this tight: only true giants, not a long tail of mid-caps.
 
 ## Verify before committing
-- `"ticker":` count **matches between** `earnings.json` and `index.html` (currently 133; it only
+- `"ticker":` count **matches between** `earnings.json` and `index.html` (currently 135; it only
   changes when you add a new name via step 8).
 - Both files parse as valid JSON / valid JS literal (no trailing commas, no `undefined`).
 - Only fields listed above changed; estimates and descriptions untouched unless correcting an error.
